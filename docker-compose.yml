@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - pg_data:/var/lib/postgres/data
+    environment:
+      - POSTGRES_USER=localuser
+      - POSTGRES_PASSWORD=vvvuKqhMhqoNCuxCqzRbhudPKkAmKHbm
+      - POSTGRES_DB=mato_master
+
+volumes:
+  pg_data:
+    driver: local

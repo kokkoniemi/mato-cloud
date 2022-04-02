@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "start": "node .output/server/index.mjs"
+  },
+  "prisma": {
+    "schema": "server/db/schema.prisma"
+  },
+  "devDependencies": {
+    "nuxt3": "latest",
+    "prisma": "^3.11.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^3.11.1"
+  }
+}

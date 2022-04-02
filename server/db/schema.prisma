@@ -1,0 +1,210 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                      String            @id @default(uuid())
+  emailHash               String            @db.VarChar(255)
+  emailHashIv             String            @db.VarChar(255)
+  emailConfirmed          Boolean
+  accesses                ProjectAccess[]   @relation("User")
+  issuedAccesses          ProjectAccess[]   @relation("IssuedBy")
+  createdAt               DateTime          @default(now())
+  updatedAt               DateTime          @updatedAt
+  recordComments          RecordComment[]
+  recordImports           RecordImport[]
+  createdMappingQuestions MappingQuestion[]
+}
+
+model Project {
+  id               String            @id @default(uuid())
+  title            String            @db.VarChar(255)
+  description      String?           @db.Text
+  themeColor       String?           @db.VarChar(24)
+  accesses         ProjectAccess[]
+  records          Record[]
+  publications     Publication[]
+  recordImports    RecordImport[]
+  mappingQuestions MappingQuestion[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+enum Role {
+  OWNER
+  COLLABORATOR
+  GUEST
+}
+
+model ProjectAccess {
+  id          String   @id @default(uuid())
+  project     Project  @relation(fields: [projectId], references: [id])
+  projectId   String   @db.VarChar(255)
+  user        User?    @relation(name: "User", fields: [userId], references: [id])
+  userId      String?  @db.VarChar(255)
+  emailHash   String   @db.VarChar(255)
+  emailHashIv String   @db.VarChar(255)
+  activated   Boolean  @default(false)
+  linkSentAt  DateTime
+  issuedBy    User     @relation(name: "IssuedBy", fields: [issuedById], references: [id])
+  issuedById  String   @db.VarChar(255)
+  role        Role     @default(COLLABORATOR)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model LoginRequest {
+  id          String   @id @default(uuid())
+  emailHash   String   @db.VarChar(255)
+  emailHashIv String   @db.VarChar(255)
+  ipHash      String   @db.VarChar(255)
+  ipHashIv    String   @db.VarChar(255)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Research data models
+
+model Record {
+  id              String           @id @default(uuid())
+  project         Project          @relation(fields: [projectId], references: [id])
+  projectId       String           @db.VarChar(255)
+  number          Int
+  title           String           @db.VarChar(255)
+  description     String           @db.VarChar(255)
+  author          String           @db.VarChar(255)
+  comments        RecordComment[]
+  status          RecordStatus?
+  urls            RecordURL[]
+  publication     Publication      @relation(fields: [publicationId], references: [id])
+  publicationId   String           @db.VarChar(255)
+  logs            RecordLog[]  // system-wide record logs
+  isDraft         Boolean          @default(true)
+  mappingKeywords MappingKeyword[]
+  history         Json // includes the current attribute values and all previous values, not full logs of related models
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+enum RecordStatus {
+  EXCLUDED
+  INCLUDED
+  UNCERTAIN
+}
+
+model RecordComment {
+  id          String   @id @default(uuid())
+  record      Record   @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  recordId    String   @db.VarChar(255)
+  createdBy   User?    @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdById String?  @db.VarChar(255)
+  content     String   @db.Text
+  history     Json // includes the current content and all previous values
+  deletedAt   DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model RecordURL {
+  id          String   @id @default(uuid())
+  record      Record   @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  recordId    String   @db.VarChar(255)
+  value       String   @db.Text
+  history     Json // includes the current value and all previous values
+  isPreferred Boolean
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Publication {
+  id        String   @id @default(uuid())
+  title     String
+  quality   Int
+  history   Json // includes the current attribute values and all previous values
+  record    Record[]
+  project   Project  @relation(fields: [projectId], references: [id])
+  projectId String   @db.VarChar(255)
+}
+
+enum SearchDatabase {
+  ACM
+  IEEE
+  SCOPUS
+  SCHOLAR
+  WILEY
+  TANDFONLINE
+  SPRINGER
+  SCIENCEDIRECT
+  WOS
+  PROQUEST
+}
+
+enum RecordImportStatus {
+  DRAFT
+  SUCCEED
+  FAILED
+}
+
+model RecordImport {
+  id          String             @id @default(uuid())
+  project     Project            @relation(fields: [projectId], references: [id])
+  projectId   String             @db.VarChar(255)
+  database    SearchDatabase
+  status      RecordImportStatus
+  total       Int
+  dublicates  Int
+  payload     Json
+  createdBy   User               @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdById String             @db.VarChar(255)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+}
+
+model RecordLog {
+  id        String   @id @default(uuid())
+  record    Record   @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  recordId  String   @db.VarChar(255)
+  field     String   @db.VarChar(255)
+  before    Json
+  after     Json
+  createdAt DateTime @default(now())
+}
+
+enum MappingQuestionType {
+  SINGLESELECT
+  MULTISELECT
+}
+
+model MappingQuestion {
+  id          String              @id @default(uuid())
+  project     Project             @relation(fields: [projectId], references: [id])
+  projectId   String              @db.VarChar(255)
+  title       String              @db.VarChar(255)
+  type        MappingQuestionType
+  isActive    Boolean
+  position    Int
+  history     Json
+  createdBy   User                @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdById String              @db.VarChar(255)
+  keywords    MappingKeyword[]
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+}
+
+model MappingKeyword {
+  id                String          @id @default(uuid())
+  title             String          @db.VarChar(255)
+  mappingQuestion   MappingQuestion @relation(fields: [mappingQuestionId], references: [id])
+  mappingQuestionId String          @db.VarChar(255)
+  position          Int
+  color             String          @db.VarChar(24)
+  records           Record[]
+}
