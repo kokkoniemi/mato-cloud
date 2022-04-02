@@ -3,17 +3,22 @@
 Developed with Nuxt. See Nuxt [documentation](https://v3.nuxtjs.org).
 
 ## Application structure
-The application follows [Nuxt conventions](https://v3.nuxtjs.org/docs/directory-structure/app) in directory structure
+The application mostly follows [Nuxt conventions](https://v3.nuxtjs.org/docs/directory-structure/app) in directory structure
 
 ```
-components      // global ui components
-composables     // global composition api 
-layouts         // ui page layouts
-pages           // route root pages
-public          // robots.txt etc.
-server          // server side code
-├── api         // api endpoints
-└── middlewares // server middlewares
+components            // global ui components
+composables           // global composition api 
+layouts               // ui page layouts
+pages                 // route root pages
+plugins               // custom plugins for Nuxt
+public                // robots.txt etc.
+server                // server side code
+├── api               // api endpoints
+├── db                // database-related content
+│   ├── migrations    // db migrations
+│   └── schema.prisma // data models
+└── middlewares       // server middlewares
+.env                  // environment variables
 ```
 
 
@@ -22,7 +27,7 @@ server          // server side code
 Make sure to install the dependencies
 
 ```bash
-yarn install
+npm install
 ```
 
 ## Development
@@ -30,7 +35,7 @@ yarn install
 Start the development server on http://localhost:3000
 
 ```bash
-yarn dev
+npm run dev
 ```
 
 ## Production
@@ -38,7 +43,7 @@ yarn dev
 Build the application for production:
 
 ```bash
-yarn build
+npm run build
 ```
 
 Checkout the [deployment documentation](https://v3.nuxtjs.org/docs/deployment).
