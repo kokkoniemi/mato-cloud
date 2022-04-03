@@ -22,6 +22,7 @@ model User {
   recordComments          RecordComment[]
   recordImports           RecordImport[]
   createdMappingQuestions MappingQuestion[]
+  recordStatusChanges     RecordStatus[]
 }
 
 model Project {
@@ -82,11 +83,11 @@ model Record {
   description     String           @db.VarChar(255)
   author          String           @db.VarChar(255)
   comments        RecordComment[]
-  status          RecordStatus?
+  statuses        RecordStatus[] // holds all statuses of different users
   urls            RecordURL[]
   publication     Publication      @relation(fields: [publicationId], references: [id])
   publicationId   String           @db.VarChar(255)
-  logs            RecordLog[]  // system-wide record logs
+  logs            RecordLog[] // system-wide record logs
   isDraft         Boolean          @default(true)
   mappingKeywords MappingKeyword[]
   history         Json // includes the current attribute values and all previous values, not full logs of related models
@@ -94,10 +95,21 @@ model Record {
   updatedAt       DateTime         @updatedAt
 }
 
-enum RecordStatus {
+enum RecordStatusValue {
   EXCLUDED
   INCLUDED
   UNCERTAIN
+}
+
+model RecordStatus {
+  id        String            @id @default(uuid())
+  record    Record            @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  recordId  String            @db.VarChar(255)
+  user      User              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String            @db.VarChar(255)
+  value     RecordStatusValue
+  isActive  Boolean
+  createdAt DateTime          @default(now())
 }
 
 model RecordComment {
