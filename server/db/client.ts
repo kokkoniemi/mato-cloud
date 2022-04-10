@@ -1,17 +1,16 @@
 /**
  * Prisma client is served as a singleton
  */
-import { PrismaClient } from '@prisma/client';
+import Prisma from '@prisma/client';
 
-interface ServerGlobal extends NodeJS.Global {
-    $dbClient: PrismaClient;
+const prisma = global.$dbClient || new Prisma.PrismaClient();
+
+if (!global.$dbClient) {
+    global.$dbClient = prisma;
 }
 
-declare const serverGlobal: ServerGlobal;
-const client = serverGlobal.$dbClient || new PrismaClient();
-
-if (!serverGlobal.$dbClient) {
-    serverGlobal.$dbClient = client;
+declare global {
+    var $dbClient: Prisma.PrismaClient
 }
 
-export { client };
+export { prisma };

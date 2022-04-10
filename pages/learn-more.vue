@@ -1,8 +1,12 @@
 <template>
     <NuxtLayout name="public">
         <div class="learn-more-page">
-            <Breadcrumb :home="home" :model="items" class="my-3" />
+
             <Card>
+                <template #title>
+                    <HeaderLogo />
+                    <Breadcrumb :home="home" :model="items" class="my-3" />
+                </template>
                 <template #content>
                     <client-only>
                         <h3>Table of contents</h3>
@@ -48,6 +52,28 @@
                         dictum. Vivamus et sem et mauris elementum facilisis. Morbi at ex non urna tempor blandit a id
                         quam. Suspendisse erat diam, sodales id elementum ac, blandit id eros.
                     </p>
+
+                    <h2 id="demo">Demonstation of usage</h2>
+                    <p>
+                        Phasellus consectetur massa a elit venenatis placerat. Etiam ac est luctus, semper ipsum ac,
+                        commodo nisl. Curabitur non pharetra augue. Maecenas leo est, sodales a ullamcorper non,
+                        sagittis ut neque. Nulla dictum leo ac viverra rhoncus. Nullam ultrices, ante sed finibus
+                        luctus, dui turpis congue enim, sit amet porttitor mauris mi a justo. Fusce lacus ex, laoreet
+                        vel odio in, tempus varius sapien. In hac habitasse platea dictumst. Integer est augue, aliquet
+                        vitae faucibus at, placerat eget felis. Donec tempor ut metus vel fringilla. Sed dictum sagittis
+                        orci et condimentum.
+                    </p>
+                    <p>
+                        VIDEO
+                    </p>
+                    <p>
+                        Mauris imperdiet pretium lobortis. Etiam augue libero, sagittis ac est ac, pulvinar commodo dui.
+                        Maecenas finibus vestibulum varius. Nullam et condimentum urna. Nam commodo tempus turpis et
+                        dictum. Vivamus et sem et mauris elementum facilisis. Morbi at ex non urna tempor blandit a id
+                        quam. Suspendisse erat diam, sodales id elementum ac, blandit id eros.
+                    </p>
+
+
                     <h2 id="contribute">Contribute in the project</h2>
 
                     <p>
@@ -152,6 +178,7 @@ const goTo = (identifier) => {
 const toc = useState('toc', () => {
     return [
         { label: 'The story', url: '#story' },
+        { label: 'Demonstration of usage', url: '#demo' },
         { label: 'Contribute in the project', url: '#contribute' },
         { label: 'Install your own systematic mapping study server', url: '#installation' }
     ]

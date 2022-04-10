@@ -1,6 +1,10 @@
 <template>
     <NuxtLayout name="public">
         <Card class="front-page">
+            <template #title>
+                <HeaderLogo />
+                <Divider />
+            </template>
             <template #content>
                 <div class="grid grid-nogutter surface-section text-800">
                     <div
@@ -13,7 +17,7 @@
                             >systematic mapping studies</div>
                             <p
                                 class="mt-0 mb-4 text-700 line-height-3"
-                            >A unified platform to conduct systematic mapping studies, which respects your data and reduces cognitive load.</p>
+                            >A unified platform to conduct systematic mapping studies that respects your data and reduces cognitive load.</p>
                             <NuxtLink to="/learn-more">
                                 <Button
                                     label="Learn More"
@@ -43,12 +47,24 @@
                 <div class="surface-section px-4 py-8 md:px-6 lg:px-8 text-center">
                     <div class="mb-3 font-bold text-2xl">
                         <span class="text-900">One tool,&nbsp;</span>
-                        <span class="text-primary">Many benefits</span>
+                        <span class="text-primary">many benefits</span>
                     </div>
                     <div
-                        class="text-700 text-sm mb-6"
-                    >We made this software for real research needs, and it became out so good that we want to share it to the whole world!</div>
+                        class="text-700 mb-6"
+                    >We made this software for real research needs, and it came out so good that we want to share it to the whole world!</div>
                     <div class="grid">
+                        <div class="col-12 md:col-4 mb-4 px-5">
+                            <span
+                                class="p-3 shadow-2 mb-3 inline-block surface-card"
+                                style="border-radius: 10px"
+                            >
+                                <i class="pi pi-globe text-4xl text-primary"></i>
+                            </span>
+                            <div class="text-900 mb-3 font-medium">Full control of data</div>
+                            <span
+                                class="text-700 text-sm line-height-3"
+                            >You control your research data. Importing and exporting data in excel or csv formats is one of the core feature of our software.</span>
+                        </div>
                         <div class="col-12 md:col-4 mb-4 px-5">
                             <span
                                 class="p-3 shadow-2 mb-3 inline-block surface-card"
@@ -60,6 +76,18 @@
                             <span
                                 class="text-700 text-sm line-height-3"
                             >The software is tailored exclusively for systematic mapping studies. There is no irrelevant features to confuse you.</span>
+                        </div>
+                        <div class="col-12 md:col-4 mb-4 px-5">
+                            <span
+                                class="p-3 shadow-2 mb-3 inline-block surface-card"
+                                style="border-radius: 10px"
+                            >
+                                <i class="pi pi-github text-4xl text-primary"></i>
+                            </span>
+                            <div class="text-900 mb-3 font-medium">Open Source</div>
+                            <span
+                                class="text-700 text-sm line-height-3"
+                            >It really is easy to audit our software or contribute in the development. With a little technical skills you may even host your own instance.</span>
                         </div>
                         <div class="col-12 md:col-4 mb-4 px-5">
                             <span
@@ -84,30 +112,6 @@
                             <span
                                 class="text-700 text-sm line-height-3"
                             >Our software makes sense! You don't need any technical expertise to use it.</span>
-                        </div>
-                        <div class="col-12 md:col-4 mb-4 px-5">
-                            <span
-                                class="p-3 shadow-2 mb-3 inline-block surface-card"
-                                style="border-radius: 10px"
-                            >
-                                <i class="pi pi-globe text-4xl text-primary"></i>
-                            </span>
-                            <div class="text-900 mb-3 font-medium">Full control of data</div>
-                            <span
-                                class="text-700 text-sm line-height-3"
-                            >You control your research data. Importing and exporting data in excel or csv formats is one of the core feature of our software.</span>
-                        </div>
-                        <div class="col-12 md:col-4 mb-4 px-5">
-                            <span
-                                class="p-3 shadow-2 mb-3 inline-block surface-card"
-                                style="border-radius: 10px"
-                            >
-                                <i class="pi pi-github text-4xl text-primary"></i>
-                            </span>
-                            <div class="text-900 mb-3 font-medium">Open Source</div>
-                            <span
-                                class="text-700 text-sm line-height-3"
-                            >It really is easy to audit our software or contribute in the development. With a little technical skills you may even host your own instance.</span>
                         </div>
                         <div class="col-12 md:col-4 md:mb-4 mb-0 px-3">
                             <span

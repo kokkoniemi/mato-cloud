@@ -1,3 +1,3 @@
-import { client } from './client';
+import { prisma } from './client';
 
-export { client };
+export { prisma };

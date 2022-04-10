@@ -9,5 +9,8 @@ export default defineNuxtConfig({
         'primeflex/primeflex.css',
         '~/assets/styles/layout.scss',
         '~/assets/styles/typography.scss'
-    ]
+    ],
+    build: {
+        transpile: ['primevue']
+    }
 });
