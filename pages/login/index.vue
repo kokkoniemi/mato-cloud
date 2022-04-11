@@ -10,7 +10,7 @@
                 <template #content>
                     <p>
                         A login link will be emailed to you. If you do not have an account yet,
-                        one will be created when you login the first time.
+                        one will be created upon the first login.
                     </p>
                     <Panel header="Privacy policy summary">
                         <p>
@@ -42,7 +42,9 @@
                         <p>
                             You are also very much welcomed to audit the privacy of this software. The open source
                             codebase can be found at
-                            <a href="https://github.com/kokkoniemi/mato-cloud/">
+                            <a
+                                href="https://github.com/kokkoniemi/mato-cloud/"
+                            >
                                 GitHub
                                 repository
                             </a>, where you can raise an issue or provide a pull request.
@@ -59,6 +61,7 @@
                     </Panel>
                 </template>
                 <template #footer>
+                    <Message severity="error" v-if="errorMessage">{{ errorMessage }}</Message>
                     <div class="p-inputgroup">
                         <client-only>
                             <InputText placeholder="Email address" v-model="email" />
@@ -67,6 +70,7 @@
                                 iconPos="right"
                                 label="Request a login link"
                                 :disabled="!policyAccepted"
+                                :loading="submitting"
                                 @click="submit"
                             />
                         </client-only>
@@ -80,13 +84,29 @@
 <script setup>
 const policyAccepted = useState('policyAccepted', () => false);
 const email = ref('');
+const submitting = useState('submitting', () => false);
+const errorMessage = useState('errorMessage', () => '')
 
 const submit = async () => {
-    const res = await $fetch('/api/auth/linkRequest', {
-        method: 'POST',
-        body: { email: email.value }
-    });
-    console.log(res);
+    submitting.value = true;
+    try {
+        const res = await $fetch('/api/auth/linkRequest', {
+            method: 'POST',
+            body: { email: email.value }
+        });
+        submitting.value = false;
+
+        const { accepted } = res;
+        if (accepted.length > 0 && accepted[0] === email.value) {
+            await navigateTo({ path: '/login/requested' });
+        }
+    } catch (e) {
+        submitting.value = false;
+        errorMessage.value =
+            'Oh no! Something went wrong. Please, check the email ' +
+            'address for possible miss-spellings and try again.'
+    }
+
 }
 </script>
 

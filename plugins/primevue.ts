@@ -6,6 +6,7 @@ import Panel from 'primevue/panel';
 import InputSwitch from 'primevue/inputswitch';
 import InputText from 'primevue/inputtext';
 import InlineMessage from 'primevue/inlinemessage';
+import Message from 'primevue/message';
 import Divider from 'primevue/divider';
 import Breadcrumb from 'primevue/breadcrumb';
 import Menu from 'primevue/menu';
@@ -21,6 +22,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('InputSwitch', InputSwitch);
     nuxtApp.vueApp.component('InputText', InputText);
     nuxtApp.vueApp.component('InlineMessage', InlineMessage);
+    nuxtApp.vueApp.component('Message', Message);
     nuxtApp.vueApp.component('Listbox', Listbox);
     nuxtApp.vueApp.component('Menu', Menu);
 });

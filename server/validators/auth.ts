@@ -8,7 +8,7 @@ export const linkRequestSchema = object.keys({
     email: string.email({ minDomainSegments: 2 }).required()
 });
 
-export async function validateCreateLinkRequest(body: Record<string, any>) {
+export const validateCreateLinkRequest = async (body: Record<string, any>) => {
     return linkRequestSchema.validateAsync(body, { stripUnknown: true });
 }
 
@@ -18,6 +18,14 @@ export const loginRequestSchema = {
     fingerprint: string.required()
 }
 
-export async function validateLoginRequest(body: Record<string, any>) {
+export const validateLoginRequest = async (body: Record<string, any>) => {
     return loginRequestSchema.validateAsync(body, { stripUnknown: true });
+}
+
+export const tokenRefreshRequestSchema = object.keys({
+    token: string.required()
+})
+
+export const validateTokenRefreshRequest = async (body: Record<string, any>) => {
+    return tokenRefreshRequestSchema.validateAsync(body, { stripUnknown: true });
 }

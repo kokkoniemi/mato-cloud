@@ -44,10 +44,18 @@ export const randomHash = (length: number): string => {
 };
 
 
-export function generateAccessToken(payload: Record<string, any>): string {
+export const generateAccessToken = (payload: Record<string, any>): string => {
     return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 60 });
 }
 
-export function generateRefreshToken(payload: Record<string, any>): any {
+export const generateRefreshToken = (payload: Record<string, any>): any => {
     return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: 86400 });
+}
+
+export const verifyRefreshToken = (token: string): TokenPayload => {
+    return jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+}
+
+export const decodeAccessToken = (token: string): TokenPayload => {
+    return jwt.decode(token, process.env.ACCESS_TOKEN_SECRET);
 }

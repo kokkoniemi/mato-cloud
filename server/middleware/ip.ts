@@ -1,6 +1,4 @@
 import { IncomingMessage, ServerResponse } from 'http'
-import { sendError } from 'h3';
-import { createError } from "~/server/utils/error";
 
 export default async function setIpMiddleware(req: IncomingMessage, res: ServerResponse) {
     const ipHeaders = [
@@ -32,8 +30,7 @@ export default async function setIpMiddleware(req: IncomingMessage, res: ServerR
     req.ipAddress = req.socket.remoteAddress
 
     if (!req.ipAddress && process.env.NODE_ENV === 'production') {
-        console.error('Ip address not accessible')
-        return sendError(res, createError(500));
+        throw new Error('Ip address not accessible');
     }
 }
 
