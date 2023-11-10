@@ -7,10 +7,12 @@ import InputSwitch from 'primevue/inputswitch';
 import InputText from 'primevue/inputtext';
 import InlineMessage from 'primevue/inlinemessage';
 import Message from 'primevue/message';
+import Menubar from 'primevue/menubar';
 import Divider from 'primevue/divider';
 import Breadcrumb from 'primevue/breadcrumb';
 import Menu from 'primevue/menu';
 import Listbox from 'primevue/listbox';
+
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, { ripple: true });
@@ -25,4 +27,5 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Message', Message);
     nuxtApp.vueApp.component('Listbox', Listbox);
     nuxtApp.vueApp.component('Menu', Menu);
+    nuxtApp.vueApp.component('Menubar', Menubar);
 });

@@ -6,6 +6,7 @@ import { decrypt, encrypt, generateAccessToken, generateRefreshToken, randomHash
 import { validateLoginRequest } from "~/server/validators/auth";
 import { prisma } from '~/server/db';
 import { createUserIfNotExist } from "~/server/utils/user";
+import { SOCKET_CLOSED_IP } from "./linkRequest.post";
 
 interface SuccessResponse {
     token: string;
@@ -31,11 +32,11 @@ export default async function (req: IncomingMessage, res: ServerResponse): Promi
         const lrDate = new Date(loginRequest.createdAt);
         const tenMinutesAgo = sub(new Date(), { minutes: 10 });
 
-        if (email !== lrEmail || req.ipAddress !== lrIp || isBefore(lrDate, tenMinutesAgo)) {
+        if (email !== lrEmail || (req.ipAddress || SOCKET_CLOSED_IP) !== lrIp || isBefore(lrDate, tenMinutesAgo)) {
             return sendError(res, createError(403));
         }
 
-        await createUserIfNotExist({ email, confirmEmail: true })
+        await createUserIfNotExist({ email, confirmEmail: true });
         await prisma.loginRequest.delete({ where: { id: loginHash } });
 
         const sharedKey = randomHash(10);

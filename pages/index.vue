@@ -1,3 +1,9 @@
+<script setup>
+definePageMeta({
+    title: 'Systematicmappingstudy.com'
+});
+</script>
+
 <template>
     <NuxtLayout name="public">
         <Card class="front-page">

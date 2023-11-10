@@ -14,7 +14,7 @@ interface UserCreation {
  */
 export const createUserIfNotExist = async (userParams: UserCreation) => {
     const cache = await getCache();
-    let cachedId = cache.get(userParams.email);
+    let cachedId = await cache.get(userParams.email);
 
     // refresh cache if user id not found
     if (!cachedId) {
@@ -38,6 +38,6 @@ export const createUserIfNotExist = async (userParams: UserCreation) => {
                 emailConfirmed: !!userParams.confirmEmail
             }
         })
-        cache.set(userParams.email, newUser.id);
+        await cache.set(userParams.email, newUser.id);
     }
 }

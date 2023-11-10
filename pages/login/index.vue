@@ -83,7 +83,7 @@
 
 <script setup>
 const policyAccepted = useState('policyAccepted', () => false);
-const email = ref('');
+const email = useState('email', () => '');
 const submitting = useState('submitting', () => false);
 const errorMessage = useState('errorMessage', () => '')
 

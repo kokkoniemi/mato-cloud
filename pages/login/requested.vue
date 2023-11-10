@@ -9,7 +9,8 @@
 
                 <template #content>
                     <div class="text-center my-6">
-                        A login link was sent to your email address. Please, use the provided link to login.
+                        A login link was sent to email address <strong>{{ email }}</strong>. Please, use the provided
+                        link to login.
                     </div>
                 </template>
             </Card>
@@ -18,6 +19,7 @@
 </template>
 
 <script setup>
+const email = useState('email', () => '');
 const home = useState('breadcrumHome', () => ({
     icon: 'pi pi-home',
     to: '/'

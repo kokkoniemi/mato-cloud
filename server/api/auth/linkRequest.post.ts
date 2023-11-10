@@ -8,7 +8,7 @@ import { validateCreateLinkRequest } from "~/server/validators/auth";
 import { Encrypted, encrypt } from "~/server/utils/security";
 import { MailerResponse, send } from '~/server/utils/mail';
 
-const SOCKET_CLOSED_IP = '127.0.0.1'; // may occur in local development
+export const SOCKET_CLOSED_IP = '127.0.0.1'; // may occur in local development
 
 /**
  * Sends login email to given email address
@@ -29,7 +29,7 @@ export default async function linkRequest(req: IncomingMessage, res: ServerRespo
         });
 
         const loginEmail = fs.readFileSync('./server/templates/login-email.ejs', { encoding: 'utf-8' });
-        const loginLink = `${process.env.APP_ORIGIN}/login/${loginRequest.id}`;
+        const loginLink = `${process.env.APP_ORIGIN}/login/${loginRequest.id}?u=${email}`;
         const message = ejs.render(loginEmail, { link: loginLink });
 
         return await send(
